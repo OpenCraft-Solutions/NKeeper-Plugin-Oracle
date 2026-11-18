@@ -3,9 +3,7 @@
   <PropertyGroup>
     <IsPackable>false</IsPackable>
     <OutputType>Exe</OutputType>
-    <!-- The tests run where they're built, unlike the plugin, which is built for Linux servers. -->
-    <RuntimeIdentifier>$(NETCoreSdkRuntimeIdentifier)</RuntimeIdentifier>
-    <SelfContained>false</SelfContained>
+    <!-- Portable, unlike the plugin: the test host picks the driver's assets for the machine it runs on. -->
     <!-- Test names use underscores; tests pass literal arrays freely; tests write their own SQL. -->
     <NoWarn>$(NoWarn);CA1707;CA1861;CA2100</NoWarn>
   </PropertyGroup>
