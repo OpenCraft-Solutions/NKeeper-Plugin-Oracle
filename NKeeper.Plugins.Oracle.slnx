@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="backend/NKeeper.Plugins.Oracle.csproj" />
+  <Project Path="tests/NKeeper.Plugins.Oracle.Tests.csproj" />
+</Solution>

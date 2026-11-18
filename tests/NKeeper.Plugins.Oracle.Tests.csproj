@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <OutputType>Exe</OutputType>
+    <!-- The tests run where they're built, unlike the plugin, which is built for Linux servers. -->
+    <RuntimeIdentifier>$(NETCoreSdkRuntimeIdentifier)</RuntimeIdentifier>
+    <SelfContained>false</SelfContained>
+    <!-- Test names use underscores; tests pass literal arrays freely; tests write their own SQL. -->
+    <NoWarn>$(NoWarn);CA1707;CA1861;CA2100</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <!-- The plugin leaves the SDK and db-core's assembly to the server; its tests need them here. -->
+    <PackageReference Include="NKeeper.Abstractions" />
+    <PackageReference Include="NKeeper.Plugins.Databases" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" />
+    <PackageReference Include="Testcontainers.Oracle" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\backend\NKeeper.Plugins.Oracle.csproj" SetRuntimeIdentifier="false" GlobalPropertiesToRemove="RuntimeIdentifier" />
+  </ItemGroup>
+
+</Project>
