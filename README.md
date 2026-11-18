@@ -4,7 +4,7 @@ The official `oracle` plugin for [NKeeper](https://github.com/OpenCraft-Solution
 
 ## What it does
 
-It's a database engine for `db-core` (§7.32), which it depends on: db-core runs the session and draws the tab, and this plugin brings Oracle's driver (ODP.NET) and SQL. It needs SDK 1.8 (`>=1.8.0 <2.0.0`) and db-core 1.x.
+It's a database engine for `db-core` (§7.32), which it depends on: db-core runs the session and draws the tab, and this plugin brings Oracle's driver (ODP.NET) and SQL. It needs SDK 1.9 (`>=1.9.0 <2.0.0`), whose database failures carry the driver's inner messages, and db-core 1.x.
 
 It contributes the **`oracle` service type** ("Oracle", port 1521, health by TCP), whose one setting is the database's service name or SID, and its database tab (`oracle.query`), ported from 1.x:
 - **Signing in.** Core opens the login with ODP.NET and the credential's password, which the plugin never sees (SDK 1.7):

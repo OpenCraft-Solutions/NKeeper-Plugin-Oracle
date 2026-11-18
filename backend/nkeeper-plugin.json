@@ -3,7 +3,7 @@
   "id": "oracle",
   "name": "Oracle",
   "version": "1.0.0",
-  "sdkVersion": ">=1.8.0 <2.0.0",
+  "sdkVersion": ">=1.9.0 <2.0.0",
   "builtIn": true,
   "dependsOn": [{ "id": "db-core", "version": ">=1.0.0 <2.0.0" }],
   "frontend": {
