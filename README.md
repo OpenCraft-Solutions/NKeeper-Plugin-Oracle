@@ -16,7 +16,14 @@ It contributes the **`oracle` service type** ("Oracle", port 1521, health by TCP
 - **Scripts:** Select Top 1000 Rows, Script as CREATE (from DBMS_METADATA) and Script as EXECUTE.
 - **The blocking manager**, under Management, from `V$SESSION` (it needs `SELECT_CATALOG_ROLE` or similar), and kill (`ALTER SYSTEM KILL SESSION 'sid,serial#' IMMEDIATE`), audited as `oracle.kill`.
 
-**Not yet:** 1.x's Management reports (Storage, Backups, Health) and the insurance survey. Oracle's native encryption doesn't prove the server's identity, so there's no certificate to trust, as in 1.x.
+**Management reports** (1.1.0, on db-core 1.1), 1.x's, under Management in the explorer. Each reads only, and offers scripts it never runs: SQL opens in a query window, RMAN commands are shown to copy.
+- **Storage:** tablespaces (used of their size and of their maximum), temporary tablespaces and datafiles, warning at 85% of a tablespace's maximum, with scripts to let one grow.
+- **Backups (RMAN):** the database's log mode and last backup, RMAN's job history, running jobs, datafiles' last backups, the fast recovery area and its usage, and RMAN's configuration, warning when a backup is old or failed, with RMAN scripts.
+- **Health:** the instance, its size, resource limits, alerts, the alert log, log switches, invalid objects (with scripts to recompile them), locked and expiring accounts, and long operations.
+
+They read the DBA_ and V$ views, so the login needs SELECT_CATALOG_ROLE (or SELECT ANY DICTIONARY); a section it can't read says why.
+
+**Not yet:** the insurance survey. Oracle's native encryption doesn't prove the server's identity, so there's no certificate to trust, as in 1.x.
 
 The plugin's ID is `oracle`, and it is built in: it is signed with NKeeper's official key and installed with NKeeper.
 

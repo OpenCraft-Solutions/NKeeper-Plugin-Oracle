@@ -9,7 +9,7 @@
     <PackageVersion Include="NKeeper.Abstractions" Version="1.9.0" />
     <PackageVersion Include="NKeeper.Plugin.Build" Version="1.9.0" />
     <!-- db-core's assembly (§7.32), which this plugin depends on. -->
-    <PackageVersion Include="NKeeper.Plugins.Databases" Version="1.0.0" />
+    <PackageVersion Include="NKeeper.Plugins.Databases" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup Label="Driver">

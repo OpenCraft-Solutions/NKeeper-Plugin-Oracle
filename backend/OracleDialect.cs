@@ -30,6 +30,12 @@ public sealed partial class OracleDialect : IDatabaseDialect
     private const string Sequences = "sequences";
     private const string Sequence = "sequence";
 
+    /// <summary>1.x's Management reports (db-core 1.1): Storage, Backups (RMAN) and Health.</summary>
+    public IReadOnlyList<DatabaseReportInfo> Reports => OracleReports.All;
+
+    public Task<ToolReport> ReportAsync(DbConnection connection, string name, DateTimeOffset now, CancellationToken cancellationToken) =>
+        OracleReports.ReportAsync(connection, name, now, cancellationToken);
+
     /// <summary><c>"NAME"</c>, with <c>"</c> doubled: safe to put in SQL as an identifier.</summary>
     public static string Quote(string name) => $"\"{name.Replace("\"", "\"\"", StringComparison.Ordinal)}\"";
 
@@ -388,6 +394,7 @@ public sealed partial class OracleDialect : IDatabaseDialect
             Kinds.Management =>
             [
                 new SqlObjectNode { Kind = Kinds.Tool, Label = "Blocking Manager", Detail = "Blocking chains", Tool = Kinds.BlockingManagerTool },
+                .. OracleReports.ToolNodes,
             ],
             _ => throw new DatabaseToolException($"“{node.Kind}” has no children."),
         };

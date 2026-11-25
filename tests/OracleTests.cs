@@ -118,8 +118,26 @@ public sealed class OracleTests(OracleFixture oracle)
 
         Assert.Equal($"SELECT *\nFROM \"{OracleFixture.UserName}\".\"{table}\"\nWHERE ROWNUM <= 1000;\n", await session.ScriptAsync(node, "selectTop"));
         Assert.Contains($"CREATE TABLE \"{OracleFixture.UserName}\".\"{table}\"", await session.ScriptAsync(node, "create"), StringComparison.Ordinal);
-        var management = Assert.Single(await session.ExploreAsync(server[2]));
-        Assert.Equal("blocking", management.GetProperty("tool").GetString());
+        var management = await session.ExploreAsync(server[2]);
+        Assert.Equal(["blocking", "report:storage", "report:backups", "report:health"], management.Select(n => n.GetProperty("tool").GetString()));
+    }
+
+    [Fact]
+    public async Task The_management_reports_read_storage_backups_and_health_and_say_what_a_login_cant_read()
+    {
+        oracle.SkipIfUnavailable();
+        await using var session = await SessionAsync();
+
+        var info = await session.Channel.ReplyAsync("info");
+        Assert.Equal(["storage", "backups", "health"], info.GetProperty("reports").EnumerateArray().Select(r => r.GetProperty("name").GetString()));
+        foreach (var name in new[] { "storage", "backups", "health" })
+        {
+            var report = await session.Channel.ReplyAsync("report", new { name });
+            var sections = report.GetProperty("sections").EnumerateArray().ToList();
+            Assert.NotEmpty(sections);
+            // Each section either read its view or says why it couldn't (a test login may lack SELECT_CATALOG_ROLE).
+            Assert.All(sections, s => Assert.True(s.GetProperty("results").GetArrayLength() > 0 || s.GetProperty("error").GetString() is { Length: > 0 }, s.ToString()));
+        }
     }
 
     [Fact]
